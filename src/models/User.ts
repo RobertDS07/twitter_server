@@ -3,17 +3,22 @@ import bcrypt from 'bcryptjs'
 
 import sequelize from '../database/index'
 
-interface user extends Model {
+interface posts {
+    id: number
+    userId: number
+    content: string
+    mutable?: boolean
+}
+
+export interface user extends Model {
     email: string
     password: string
     name: string
     id: number
-    post?: {
-        content: string
-    }
+    posts?: posts[]
 }
 
-const User = sequelize.define(
+const User = sequelize.define<user>(
     'users',
     {
         email: {
@@ -33,12 +38,19 @@ const User = sequelize.define(
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: {
+                    args: [5, 40],
+                    msg: 'Mínimo 5 caracteres',
+                },
+            },
         },
     },
     {
         hooks: {
             beforeSave: async (user: user) => {
                 user.password = await bcrypt.hash(user.password, 10)
+                user.name = user.name.trim()
             },
         },
     },

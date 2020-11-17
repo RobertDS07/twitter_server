@@ -11,9 +11,9 @@ const Coment = sequelize.define('coments', {
     },
 })
 
-Coment.belongsTo(Post, { foreignKey: 'id' })
-Coment.belongsTo(User, { foreignKey: 'id' })
-User.hasMany(Coment, { foreignKey: 'id' })
-Post.hasMany(Coment, { foreignKey: 'id' })
+Coment.belongsTo(Post, { foreignKey: 'postId' })
+Coment.belongsTo(User, { foreignKey: 'userId' })
+User.hasMany(Coment, { foreignKey: 'userId' })
+Post.hasMany(Coment, { foreignKey: 'postId' })
 
 export default Coment

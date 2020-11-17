@@ -6,6 +6,7 @@ module.exports = {
             id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
+                primaryKey: true,
                 autoIncrement: true,
                 unique: true,
             },
@@ -19,18 +20,22 @@ module.exports = {
             },
             postId: {
                 type: Sequelize.INTEGER,
-                references: { model: 'posts', references: 'id' },
+                references: { model: 'posts', key: 'id' },
                 allowNull: false,
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
-            usarId: {
+            userId: {
                 type: Sequelize.INTEGER,
-                references: { model: 'users', references: 'id' },
+                references: { model: 'users', key: 'id' },
                 allowNull: false,
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
+            content: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            }
         })
     },
 
