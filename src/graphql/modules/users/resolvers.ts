@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import { jwtDecoded } from '../posts/resolvers'
-
 import User, { user } from '../../../models/User'
 
 import verifyData from '../../../utils/verifyData'
 import createToken from '../../../utils/createToken'
 import verifyToken from '../../../utils/verifyToken'
+import Post from '../../../models/Post'
+import Coment from '../../../models/Coment'
 
 interface createUser {
     data: {
@@ -87,7 +87,7 @@ export default {
     },
     perfil: async ({ token, userId }: perfil): Promise<user> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -98,14 +98,26 @@ export default {
 
             const userPerfil = await User.findOne({
                 where: { id: userId },
-                include: [{ all: true }],
+                include: [
+                    {
+                        model: Post,
+                        include: [{ model: Coment, include: [User] }],
+                    },
+                ],
             })
+            console.log(userPerfil)
 
             if (!userPerfil) throw new Error('Usuário não encontrado')
 
             if (userPerfil['posts']) {
                 userPerfil.posts.forEach(e => {
                     if (e.userId === user.id) e.mutable = true
+
+                    if (e.coments.length)
+                        e.coments.forEach(comment => {
+                            if (comment.userId === user.id)
+                                comment.mutable = true
+                        })
                 })
 
                 userPerfil.posts.sort((a, b) => b.id - a.id)

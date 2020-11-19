@@ -6,14 +6,6 @@ import Coment from '../../../models/Coment'
 import verifyToken from '../../../utils/verifyToken'
 import User from '../../../models/User'
 
-export interface jwtDecoded {
-    user: {
-        id: number
-        name: string
-        email: string
-    }
-}
-
 interface createPost {
     token: string
     content: string
@@ -43,10 +35,15 @@ interface createComment {
     content: string
 }
 
+interface deleteComment {
+    token: string
+    commentId: number
+}
+
 export default {
     createPost: async ({ token, content }: createPost): Promise<boolean> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -69,7 +66,7 @@ export default {
     },
     allPosts: async ({ token, lastId }: allPosts): Promise<post[]> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -107,7 +104,7 @@ export default {
     },
     deletePost: async ({ postId, token }: deletePost): Promise<boolean> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -134,7 +131,7 @@ export default {
         data,
     }: updatePost): Promise<boolean> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -163,7 +160,7 @@ export default {
         content,
     }: createComment): Promise<boolean> => {
         try {
-            const decoded = await verifyToken<jwtDecoded>(token)
+            const decoded = await verifyToken(token)
 
             if (!decoded)
                 throw new Error(
@@ -179,6 +176,29 @@ export default {
             })
 
             if (!comment)
+                throw new Error(
+                    'Houve algo de errado ao cadastrar o comentário, tente novamente',
+                )
+
+            return true
+        } catch (e) {
+            return e
+        }
+    },
+    deleteComment: async ({
+        token,
+        commentId,
+    }: deleteComment): Promise<boolean> => {
+        try {
+            const decoded = await verifyToken(token)
+
+            const deleted = await Coment.destroy({
+                where: {
+                    [Op.and]: [{ id: commentId }, { userId: decoded.user.id }],
+                },
+            })
+
+            if (!deleted)
                 throw new Error(
                     'Houve algo de errado ao cadastrar o comentário, tente novamente',
                 )

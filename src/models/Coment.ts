@@ -1,10 +1,18 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model } from 'sequelize'
 
 import sequelize from '../database'
 import Post from './Post'
-import User from './User'
+import User, { user } from './User'
 
-const Coment = sequelize.define('coments', {
+export interface Comment extends Model {
+    content: string
+    mutable?: boolean
+    user: user[]
+    userId: number
+    id: number
+}
+
+const Coment = sequelize.define<Comment>('coments', {
     content: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -29,7 +29,7 @@ export default `
         id: Int!
         content: String!
         mutable: Boolean
-        coment: [Coment]
+        coments: [Coment]
     }
 
     type Coment {

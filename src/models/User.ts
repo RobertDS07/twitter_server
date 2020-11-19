@@ -3,19 +3,14 @@ import bcrypt from 'bcryptjs'
 
 import sequelize from '../database/index'
 
-interface posts {
-    id: number
-    userId: number
-    content: string
-    mutable?: boolean
-}
+import { post } from './Post'
 
 export interface user extends Model {
     email: string
     password: string
     name: string
     id: number
-    posts?: posts[]
+    posts?: post[]
 }
 
 const User = sequelize.define<user>(
