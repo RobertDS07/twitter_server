@@ -15,6 +15,4 @@ app.use(
     }),
 )
 
-app.listen(process.env.PORT || 8081, () =>
-    console.log('http://localhost:8081/graphql'),
-)
+app.listen(process.env.PORT, () => console.log('http://localhost:8081/graphql'))

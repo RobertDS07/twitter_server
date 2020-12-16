@@ -20,5 +20,6 @@
     "rules": {
         "prettier/prettier": "error",
         "@typescript-eslint/no-var-requires": 0
-    }
+    },
+    "ignorePatterns": "**/*.js"
 }

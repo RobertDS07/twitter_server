@@ -9,12 +9,12 @@ interface jwtDecoded {
 }
 
 const verifyToken = (token: string): Promise<jwtDecoded> => {
-    return new Promise<jwtDecoded>(res => {
+    return new Promise<jwtDecoded>((res, rej) => {
         jwt.verify(
             token,
             process.env.SECRET || 'qeoqwi3432fh',
             (err, decoded) => {
-                if (err) res()
+                if (err) rej()
 
                 res((decoded as unknown) as jwtDecoded)
             },

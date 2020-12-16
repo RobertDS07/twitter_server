@@ -5,6 +5,7 @@ import Coment from '../../../models/Coment'
 
 import verifyToken from '../../../utils/verifyToken'
 import User from '../../../models/User'
+import Like from '../../../models/Like'
 
 interface createPost {
     token: string
@@ -27,17 +28,6 @@ interface updatePost {
     data: {
         content: string
     }
-}
-
-interface createComment {
-    token: string
-    postId: number
-    content: string
-}
-
-interface deleteComment {
-    token: string
-    commentId: number
 }
 
 export default {
@@ -64,6 +54,7 @@ export default {
             return e
         }
     },
+
     allPosts: async ({ token, lastId }: allPosts): Promise<post[]> => {
         try {
             const decoded = await verifyToken(token)
@@ -85,8 +76,10 @@ export default {
                 : await Post.findAll({
                       limit: 10,
                       order: [['id', 'DESC']],
-                      include: [User, { model: Coment, include: [User] }],
+                      include: [User, { model: Coment, include: [User] }, Like],
                   })
+
+            console.log(posts)
 
             posts.forEach(e => {
                 if (e.userId === user.id) e.mutable = true
@@ -102,6 +95,7 @@ export default {
             return e
         }
     },
+
     deletePost: async ({ postId, token }: deletePost): Promise<boolean> => {
         try {
             const decoded = await verifyToken(token)
@@ -125,6 +119,7 @@ export default {
             return e
         }
     },
+
     updatePost: async ({
         token,
         postId,
@@ -147,60 +142,6 @@ export default {
             if (!updated)
                 throw new Error(
                     'Houve algo de errado com suas credenciais, tente logar novamente.',
-                )
-
-            return true
-        } catch (e) {
-            return e
-        }
-    },
-    createComment: async ({
-        token,
-        postId,
-        content,
-    }: createComment): Promise<boolean> => {
-        try {
-            const decoded = await verifyToken(token)
-
-            if (!decoded)
-                throw new Error(
-                    'Houve algo de errado com suas credenciais, tente logar novamente.',
-                )
-
-            const { user } = decoded
-
-            const comment = await Coment.create({
-                postId,
-                content,
-                userId: user.id,
-            })
-
-            if (!comment)
-                throw new Error(
-                    'Houve algo de errado ao cadastrar o comentário, tente novamente',
-                )
-
-            return true
-        } catch (e) {
-            return e
-        }
-    },
-    deleteComment: async ({
-        token,
-        commentId,
-    }: deleteComment): Promise<boolean> => {
-        try {
-            const decoded = await verifyToken(token)
-
-            const deleted = await Coment.destroy({
-                where: {
-                    [Op.and]: [{ id: commentId }, { userId: decoded.user.id }],
-                },
-            })
-
-            if (!deleted)
-                throw new Error(
-                    'Houve algo de errado ao cadastrar o comentário, tente novamente',
                 )
 
             return true

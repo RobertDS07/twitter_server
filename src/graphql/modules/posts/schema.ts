@@ -4,8 +4,6 @@ export default `
     }
 
     type Mutation {
-        createComment(token: String! postId: Int! content: String!): Boolean!
-        deleteComment(token: String! commentId: Int!): Boolean!
         createPost(token: String! content: String!): Boolean!
         deletePost(token: String! postId: Int!): Boolean!
         updatePost(token: String! postId: Int! data: updatePostInput): Boolean!
