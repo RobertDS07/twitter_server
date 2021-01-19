@@ -1,12 +1,9 @@
 export default `
-    type Query {
-        perfil(token: String! userId: Int!): Perfil!
-        login(data: loginInput!): String!
-        verifyToken(token: String!): Boolean!
-    }
-
     type Mutation {
         createUser(data: createUserInput!): String!
+        login(data: loginInput!): String!
+        verifyToken(token: String!): Boolean!
+        perfil(token: String! userId: Int!): Perfil!
     }
 
     input loginInput {

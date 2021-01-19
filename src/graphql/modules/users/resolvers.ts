@@ -48,7 +48,9 @@ export default {
                 email: user.email,
             }
 
-            return createToken<typeof userToToken>(userToToken)
+            const identity = createToken<typeof userToToken>(userToToken)
+
+            return JSON.stringify(identity)
         } catch (e) {
             return e
         }
@@ -69,7 +71,9 @@ export default {
                 name: user.name,
             }
 
-            return createToken<typeof userToToken>(userToToken)
+            const identity = createToken<typeof userToToken>(userToToken)
+
+            return JSON.stringify(identity)
         } catch (e) {
             return e
         }
