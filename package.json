@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "prestart": "tsc",
-    "start": "node -r dotenv/config dist/index.js"
+    "start": "node --inspect -r dotenv/config dist/index.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -25,8 +25,10 @@
   "dependencies": {
     "@graphql-tools/load-files": "^6.2.4",
     "@graphql-tools/merge": "^6.2.5",
+    "@types/cors": "^2.8.9",
     "@types/sequelize": "^4.28.9",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
     "graphql": "^15.4.0",
