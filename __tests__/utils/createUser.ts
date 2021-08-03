@@ -5,10 +5,12 @@ import UsersRepository, {
 } from '../../src/repositories/UsersRepository'
 
 import Users, { IUser } from '../../src/models/Users'
+import tokenService from '../../src/services/tokenService'
 
 interface IReturn {
     user: IUser | Required<IUser>
     rawData: TPropsCreateUser
+    token: string
 }
 
 export default async function createUser(
@@ -24,5 +26,7 @@ export default async function createUser(
         ? ((await Users.create(dataToCreateUser)).toJSON() as Required<IUser>)
         : ((await UsersRepository.create(dataToCreateUser)) as IUser)
 
-    return { user, rawData: dataToCreateUser }
+    const token = tokenService.createToken(user)
+
+    return { user, rawData: dataToCreateUser, token }
 }
