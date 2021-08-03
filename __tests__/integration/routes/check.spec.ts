@@ -13,7 +13,7 @@ describe(`/check route tests`, () => {
         await sequelize.sync({ force: true })
     })
 
-    it(`Should return a 200 for valid token`, async () => {
+    it(`Should return a 204 for valid token`, async () => {
         const { user } = await createUser(true)
 
         const token = tokenService.createToken(user)
@@ -22,7 +22,7 @@ describe(`/check route tests`, () => {
             .get(`/check`)
             .set({ Authorization: `Bearer ${token}` })
 
-        expect(res.statusCode).toBe(200)
+        expect(res.statusCode).toBe(204)
     })
 
     it(`Should return a error (401) for invalid token`, async () => {
