@@ -4,7 +4,7 @@ import BaseController from '../../baseController'
 
 class CheckController extends BaseController {
     async find(req: Request, res: Response): Promise<void> {
-        res.status(200).send()
+        res.status(204).send()
     }
 }
 
