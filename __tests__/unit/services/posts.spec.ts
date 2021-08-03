@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import sequelize from '../../../src/sequelize'
 
 import postsService from '../../../src/services/postsService'
@@ -11,7 +10,7 @@ describe(`postsService tests`, () => {
         await sequelize.sync({ force: true })
     })
 
-    it(`Should return a paginated list of posts`, async () => {
+    it(`Should return a paginated posts with new property: 'canChange'`, async () => {
         const { user } = await createUser()
 
         //any post
@@ -20,7 +19,12 @@ describe(`postsService tests`, () => {
         //my post
         await createPost(user.id)
 
-        const { posts } = await postsService.find()
+        const dataToFindPosts = {
+            skip: 0,
+            userId: user.id,
+        }
+
+        const { posts } = await postsService.find(dataToFindPosts)
 
         const hasMyPost = posts.some(post => !!post.canChange)
 
