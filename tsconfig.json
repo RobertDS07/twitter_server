@@ -20,6 +20,8 @@
     }
   },
   "exclude": [
-    "./__tests__"
+    "./__tests__",
+    "./plop",
+    "plopfile.ts"
   ]
 }
