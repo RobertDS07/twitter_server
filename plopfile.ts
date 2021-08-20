@@ -3,19 +3,11 @@ import { NodePlopAPI } from 'plop'
 import {
     actions as createRouteActions,
     prompts as creatRoutePrompts,
-} from './plop/generators/createRoute'
+} from './tools/generators/createRoute'
 import {
     name as capitalCaseHelperName,
     helperFunction as capitalCaseHelperFunction,
-} from './plop/helpers/capitalCase'
-
-export type TAction = `createRoute`
-
-export interface IPlopData {
-    action?: TAction
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any
-}
+} from './tools/helpers/capitalCase'
 
 const promptsTo = [...creatRoutePrompts]
 
@@ -37,7 +29,7 @@ export default function (plop: NodePlopAPI): void {
             },
             ...promptsTo,
         ],
-        actions: (data: IPlopData) => {
+        actions: data => {
             if (!data) return
 
             const actionRequired = data.action
