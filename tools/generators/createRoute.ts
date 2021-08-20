@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { IPlopData } from '../../plopfile'
-
 import { routePathFormater } from './utils/formaters'
 
 export const prompts = [
@@ -9,24 +6,24 @@ export const prompts = [
         type: `confirm`,
         name: `isPrivateRoute`,
         message: `Is private Route?`,
-        when: (data: IPlopData) => data.action === `createRoute`,
+        when: data => data.action === `createRoute`,
     },
     {
         type: `input`,
         name: `routePath`,
         message: `Route Path:`,
         filter: routePathFormater,
-        when: (data: IPlopData) => data.action === `createRoute`,
+        when: data => data.action === `createRoute`,
     },
     {
         type: `input`,
         name: `routeName`,
         message: `Route Name:`,
-        when: (data: IPlopData) => data.action === `createRoute`,
+        when: data => data.action === `createRoute`,
     },
 ]
 
-export const actions = (data: IPlopData) => {
+export const actions = data => {
     const isPrivateRoute = data.isPrivateRoute === true
 
     const folderToSave = isPrivateRoute ? `private` : `public`

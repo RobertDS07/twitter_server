@@ -1,0 +1,16 @@
+import {{capitalCase routeName}}Controller from './{{routeName}}Controller'
+import {{capitalCase routeName}}Middlewares from './{{routeName}}Middlewares'
+
+import BaseClassRoutes from '../../baseClassRoutes'
+
+class {{capitalCase routeName}}Routes extends BaseClassRoutes {
+    constructor() {
+        super(
+            `/{{routePath}}`,
+            {{capitalCase routeName}}Middlewares,
+            {{capitalCase routeName}}Controller,
+        )
+    }
+}
+
+export default new {{capitalCase routeName}}Routes().createRoutes()
