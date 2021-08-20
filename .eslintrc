@@ -18,7 +18,9 @@
         "prettier"
     ],
     "rules": {
+        "quotes": [2, "backtick"],
+        "prefer-template": "error",
         "prettier/prettier": "error",
-        "quotes": [2, "backtick"]
+        "consistent-return" :"warn"
     }
 }
