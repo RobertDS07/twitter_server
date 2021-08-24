@@ -3,9 +3,9 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.sequelize.query(`
-    ALTER TABLE users
-    DROP CONSTRAINT users_password_check
-  `)
+      ALTER TABLE users
+      DROP CONSTRAINT users_password_check
+    `)
   },
 
   down: async (queryInterface, Sequelize) => {

@@ -5,7 +5,7 @@ import BaseController from '../../baseController'
 import tokenService from 'services/tokenService'
 import AuthenticationService from 'services/authenticationService'
 
-import handleError from 'utils/handleError'
+import handleError from 'errors/handleError'
 
 class AuthenticationController extends BaseController {
     async post(req: Request, res: Response): Promise<void> {
@@ -19,7 +19,7 @@ class AuthenticationController extends BaseController {
 
             const token = tokenService.createToken(user)
 
-            res.status(201).send({ user, token })
+            res.status(200).send({ user, token })
         } catch (e) {
             handleError(res, e)
         }

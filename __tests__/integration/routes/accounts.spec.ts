@@ -9,7 +9,7 @@ import sequelize from '../../../src/sequelize'
 import createUser from '../../utils/createUser'
 
 describe(`/accounts routes tests`, () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await sequelize.sync({ force: true })
     })
 

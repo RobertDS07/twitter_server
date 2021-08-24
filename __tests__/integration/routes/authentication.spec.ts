@@ -8,7 +8,7 @@ import sequelize from '../../../src/sequelize'
 import createUser from '../../utils/createUser'
 
 describe(`/authentication routes tests`, () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await sequelize.sync({ force: true })
     })
 
@@ -27,10 +27,8 @@ describe(`/authentication routes tests`, () => {
     })
 
     it(`Should return code 401 and message for invalid login`, async () => {
-        const { rawData } = await createUser()
-
         const dataToLogin = {
-            email: rawData.email,
+            email: `asdasdsad@gmail.com`,
             password: `123456789`,
         }
 

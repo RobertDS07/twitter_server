@@ -4,7 +4,7 @@ import { IUser } from 'models/Users'
 
 import UsersRepository from 'repositories/UsersRepository'
 
-import CustomError from 'utils/CustomError'
+import CustomError from 'errors/CustomError'
 
 type TGetUser = Required<Pick<IUser, `email` | `password`>>
 

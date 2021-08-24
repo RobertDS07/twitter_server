@@ -3,23 +3,23 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.sequelize.query(`
-        create table if not exists users(
-          id serial primary key,
+          CREATE TABLE IF NOT EXISTS users(
+            id SERIAL PRIMARY KEY,
 
-          created_at timestamp default now(),
-          updated_at timestamp default now(),
-          deleted_at timestamp,
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW(),
+            deleted_at TIMESTAMP,
 
-          email text unique not null,
-          username text not null,
-          password text not null check (char_length(password) >= 4)
-        )
-      `)
+            email TEXT UNIQUE NOT NULL,
+            username TEXT NOT NULL,
+            password TEXT NOT NULL CHECK (CHAR_LENGTH(password) >= 4)
+          )
+        `)
     },
 
     down: async (queryInterface, Sequelize) => {
         await queryInterface.sequelize.query(`
-        drop table if exists users
+          DROP TABLE IF EXISTS users
         `)
     },
 }

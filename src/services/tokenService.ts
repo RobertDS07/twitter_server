@@ -2,7 +2,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 import { IUser } from 'models/Users'
-import CustomError from 'utils/CustomError'
+import CustomError from 'errors/CustomError'
 
 const { secret, expiresIn } = require(`../../configs/token.js`)
 
@@ -22,7 +22,8 @@ class TokenService {
     decodeToken = (token: string): IDecodedToken => {
         const decodedToken = jwt.decode(token) as IDecodedToken | null
 
-        if (!decodedToken) throw new CustomError(`Invalid token`).AccessDenied()
+        if (!decodedToken)
+            throw new CustomError(`Invalid Credentials`).AccessDenied()
 
         if (decodedToken && decodedToken.password) delete decodedToken.password
 

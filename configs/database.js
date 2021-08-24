@@ -1,3 +1,17 @@
+const commons = {
+    query: {
+        raw: true,
+        nest: true,
+    },
+    define: {
+        timestamps: true,
+        underscored: true,
+        deletedAt: true,
+        freezeTableName: true,
+        paranoid: true,
+    },
+}
+
 module.exports = {
     development: {
         username: `dev`,
@@ -6,22 +20,14 @@ module.exports = {
         host: `localhost`,
         dialect: `postgres`,
         port: 5432,
-        query: {
-            raw: true,
-            nest: true,
-        },
-        define: {
-            timestamps: true,
-            underscored: true,
-            deletedAt: true,
-            freezeTableName: true,
-            paranoid: true,
-        },
+        ...commons,
     },
     test: {
         dialect: `sqlite`,
         storage: `__tests__/database.sqlite`,
         logging: () => null,
+        transactionType: `IMMEDIATE`,
+        ...commons,
     },
     production: {
         username: process.env.DB_USERNAME,
@@ -30,16 +36,6 @@ module.exports = {
         host: process.env.DB_HOST,
         dialect: `postgres`,
         port: 5432,
-        query: {
-            raw: true,
-            nest: true,
-        },
-        define: {
-            timestamps: true,
-            underscored: true,
-            deletedAt: true,
-            freezeTableName: true,
-            paranoid: true,
-        },
+        ...commons,
     },
 }

@@ -6,7 +6,7 @@ import { ModelCtor } from 'sequelize/types'
 import Users, { IUser } from 'models/Users'
 
 import verifyEmail from 'utils/verifyEmail'
-import CustomError from 'utils/CustomError'
+import CustomError from 'errors/CustomError'
 
 export type TPropsCreateUser = Required<
     Pick<IUser, `password` | `email` | `username`>

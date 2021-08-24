@@ -4,7 +4,8 @@ import BaseController from '../../baseController'
 
 import accountsService from 'services/accountsService'
 import tokenService from 'services/tokenService'
-import handleError from 'utils/handleError'
+
+import handleError from 'errors/handleError'
 
 class AccountsController extends BaseController {
     async post(req: Request, res: Response): Promise<void> {

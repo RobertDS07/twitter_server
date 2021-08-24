@@ -10,7 +10,7 @@ import UsersRepository from '../../../src/repositories/UsersRepository'
 import UsersModel, { IUser } from '../../../src/models/Users'
 
 describe(`UsersRepository tests`, () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await sequelize.sync({ force: true })
     })
 

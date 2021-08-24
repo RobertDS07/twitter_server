@@ -5,7 +5,7 @@ import TokenService from '../../../src/services/tokenService'
 import createUser from '../../utils/createUser'
 
 describe(`tokenService tests`, () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await sequelize.sync({ force: true })
     })
 
@@ -20,5 +20,19 @@ describe(`tokenService tests`, () => {
         const tokenHasntPassword = !decodedToken.password
 
         expect(tokenIsString && tokenHasntPassword).toBeTruthy()
+    })
+
+    it(`Should return a error for invalid token`, async () => {
+        try {
+            TokenService.decodeToken(`Invalid token`)
+
+            return true
+        } catch (e) {
+            const messageQuoteInvalid = e.message
+                .toLowerCase()
+                .includes(`invalid`)
+
+            expect(messageQuoteInvalid).toBeTruthy()
+        }
     })
 })

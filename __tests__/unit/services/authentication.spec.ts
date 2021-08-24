@@ -6,7 +6,7 @@ import AuthenticationService from '../../../src/services/authenticationService'
 import createUser from '../../utils/createUser'
 
 describe(`authenticationService tests`, () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await sequelize.sync({ force: true })
     })
 
@@ -23,10 +23,10 @@ describe(`authenticationService tests`, () => {
         expect(user).toHaveProperty(`id`)
     })
 
-    it(`Shouldnt return error for invalid login`, async () => {
+    it(`Should return error for invalid login`, async () => {
         try {
             const dataToLogin = {
-                email: `a`,
+                email: `aasds@gmail.com`,
                 password: `a`,
             }
 
