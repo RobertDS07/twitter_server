@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint --fix .",
     "initdb": "sequelize db:create",
-    "postinitdb": "sequelize db:migrate",
+    "postinitdb": "sequelize db:migrate && sequelize db:seed",
+    "migrate": "sequelize db:migrate",
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register src/",
     "build": "tsc",
     "prestart": "build",
