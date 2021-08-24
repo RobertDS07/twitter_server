@@ -16,7 +16,7 @@ module.exports = {
     development: {
         username: `dev`,
         password: `dev`,
-        database: `twitter`,
+        database: `tt`,
         host: `localhost`,
         dialect: `postgres`,
         port: 5432,

@@ -22,6 +22,6 @@
   "exclude": [
     "tools",
     "./__tests__",
-    "plopfile.ts"
+    "tools/plopfile.ts"
   ]
 }
