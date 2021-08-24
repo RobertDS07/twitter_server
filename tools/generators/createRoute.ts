@@ -31,19 +31,19 @@ export const actions = data => {
     const actionToAddController = {
         type: `add`,
         path: `src/routes/${folderToSave}/${data.routeName}/${data.routeName}Controller.ts`,
-        templateFile: `plop/templates/routes/controllerTemplate.hbs`,
+        templateFile: `templates/routes/controllerTemplate.hbs`,
     }
 
     const actionToAddMiddlewares = {
         type: `add`,
         path: `src/routes/${folderToSave}/${data.routeName}/${data.routeName}Middlewares.ts`,
-        templateFile: `plop/templates/routes/middlewaresTemplate.hbs`,
+        templateFile: `templates/routes/middlewaresTemplate.hbs`,
     }
 
     const actionToAddIndex = {
         type: `add`,
         path: `src/routes/${folderToSave}/${data.routeName}/index.ts`,
-        templateFile: `plop/templates/routes/indexTemplate.hbs`,
+        templateFile: `templates/routes/indexTemplate.hbs`,
     }
 
     const actions = [

@@ -6,7 +6,7 @@
   "author": "Robert Damaceno <robertdamacenobob@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "plop": "plop",
+    "plop": "plop --plopfile=tools/plopfile.ts --dest=.",
     "lint": "eslint --fix .",
     "initdb": "sequelize db:create",
     "postinitdb": "sequelize db:migrate",

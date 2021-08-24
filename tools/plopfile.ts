@@ -3,11 +3,11 @@ import { NodePlopAPI } from 'plop'
 import {
     actions as createRouteActions,
     prompts as creatRoutePrompts,
-} from './tools/generators/createRoute'
+} from './generators/createRoute'
 import {
     name as capitalCaseHelperName,
     helperFunction as capitalCaseHelperFunction,
-} from './tools/helpers/capitalCase'
+} from './helpers/capitalCase'
 
 const promptsTo = [...creatRoutePrompts]
 
