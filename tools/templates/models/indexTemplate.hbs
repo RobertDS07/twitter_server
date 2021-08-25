@@ -1,0 +1,15 @@
+import { DataTypes, Model } from 'sequelize'
+
+import ITimestamps from '../interfaces/timestamps'
+
+import sequelize from '../sequelize'
+
+export interface I{{capitalCase entityName}} extends Model, ITimestamps {
+    id: number
+}
+
+const {{capitalCase entityName}} = sequelize.define<I{{capitalCase entityName}}>(`{{snakeCase entityName}}`, {
+    
+})
+
+export default Users

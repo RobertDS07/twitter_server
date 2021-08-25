@@ -1,22 +1,29 @@
 import { NodePlopAPI } from 'plop'
 
 import {
-    actions as createRouteActions,
-    prompts as creatRoutePrompts,
-} from './generators/createRoute'
-import {
-    name as capitalCaseHelperName,
-    helperFunction as capitalCaseHelperFunction,
-} from './helpers/capitalCase'
+    capitalCaseName,
+    snakeCaseName,
+    toCapitalCase,
+    toSnakeCasel,
+} from './helpers'
 
-const promptsTo = [...creatRoutePrompts]
+import {
+    createEntityActions,
+    createEntityPrompts,
+    createRouteActions,
+    createRoutePrompts,
+} from './generators'
+
+const promptsTo = [...createRoutePrompts, ...createEntityPrompts]
 
 const actionsTo = {
     createRoute: createRouteActions,
+    createEntity: createEntityActions,
 }
 
 export default function (plop: NodePlopAPI): void {
-    plop.setHelper(capitalCaseHelperName, capitalCaseHelperFunction)
+    plop.setHelper(capitalCaseName, toCapitalCase)
+    plop.setHelper(snakeCaseName, toSnakeCasel)
 
     plop.setGenerator(`controller`, {
         description: `Plop generator controller`,
@@ -25,7 +32,10 @@ export default function (plop: NodePlopAPI): void {
                 type: `list`,
                 name: `action`,
                 message: `Want create a:`,
-                choices: [{ name: `Route`, value: `createRoute` }],
+                choices: [
+                    { name: `Route`, value: `createRoute` },
+                    { name: `Entity`, value: `createEntity` },
+                ],
             },
             ...promptsTo,
         ],
