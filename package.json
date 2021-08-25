@@ -6,16 +6,16 @@
   "author": "Robert Damaceno <robertdamacenobob@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "plop": "plop --plopfile=tools/plopfile.ts --dest=.",
     "lint": "eslint --fix .",
     "initdb": "sequelize db:create",
     "postinitdb": "sequelize db:migrate && sequelize db:seed",
+    "plop": "plop --plopfile=tools/plopfile.ts --dest=.",
     "migrate": "sequelize db:migrate",
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register src/",
+    "test": "yarn jest",
     "build": "tsc",
     "prestart": "build",
-    "start": "node dist/",
-    "test": "yarn jest"
+    "start": "node dist/"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -49,6 +49,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "pg": "^8.6.0",
     "sequelize": "^6.6.2"
   }
