@@ -1,4 +1,5 @@
 import { helperFunction as toSnakeCase } from '../helpers/snakeCase'
+import { helperFunction as toCamelCase } from '../helpers/capitalCase'
 
 import { getTimestampsToMigrationName } from './utils/generators'
 
@@ -16,6 +17,7 @@ export const actions = data => {
     const timestamps = getTimestampsToMigrationName()
 
     const snakeCaseName = toSnakeCase(data.entityName)
+    const camelCaseName = toCamelCase(data.entityName)
 
     const actionToAddMigration = {
         type: `add`,
@@ -25,7 +27,7 @@ export const actions = data => {
 
     const actionToAddModel = {
         type: `add`,
-        path: `src/models/${data.entityName}.ts`,
+        path: `src/models/${camelCaseName}.ts`,
         templateFile: `templates/models/indexTemplate.hbs`,
     }
 

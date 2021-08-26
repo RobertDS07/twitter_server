@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-import { IPosts } from '../../src/models/Posts'
+import { IPost } from '../../src/models/Posts'
 
 import PostsRepository from '../../src/repositories/PostsRepository'
 
@@ -16,7 +16,7 @@ export default async function createPost(userId?: number): Promise<IPost> {
     const { user } = userId ? mockCreatedUser : await createUser()
 
     const dataToCreatePost = {
-        userId: user.id,
+        userId: user.id as number,
         content: faker.lorem.paragraph(),
     }
 

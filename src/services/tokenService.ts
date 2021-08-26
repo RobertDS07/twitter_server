@@ -6,7 +6,7 @@ import CustomError from 'errors/CustomError'
 
 const { secret, expiresIn } = require(`../../configs/token.js`)
 
-interface IDecodedToken extends JwtPayload, IUser {}
+export interface IDecodedToken extends JwtPayload, IUser {}
 
 class TokenService {
     createToken = (user: IUser): string => {
