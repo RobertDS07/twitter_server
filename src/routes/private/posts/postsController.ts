@@ -1,19 +1,48 @@
 import { Response } from 'express'
 
-import BaseController from '../../baseController'
+import BaseController, { IFindQuery } from '../../_baseController'
 
 import handleError from 'errors/handleError'
 
 import postsService from 'services/postsService'
 
-import IRequestWithCredentials from 'src/interfaces/requestWithCredentials'
+import { IRequestWithCredentials } from 'src/interfaces/requests'
+
+interface IPostBody {
+    content: string
+}
 
 class PostsController extends BaseController {
-    async post(req: IRequestWithCredentials, res: Response): Promise<void> {
+    async find(
+        req: IRequestWithCredentials<null, IFindQuery>,
+        res: Response,
+    ): Promise<void> {
         try {
-            const { content } = req.body
+            const { id: userId } = req.user
 
-            const userId = req.user.id
+            const { order, limit, skip, ...where } = req.query
+
+            const paginatedPosts = await postsService.findPosts(userId, {
+                order,
+                limit,
+                skip,
+                where,
+            })
+
+            res.status(200).send(paginatedPosts)
+        } catch (e: any) {
+            handleError(res, e)
+        }
+    }
+
+    async post(
+        req: IRequestWithCredentials<IPostBody>,
+        res: Response,
+    ): Promise<void> {
+        try {
+            const { id: userId } = req.user
+
+            const { content } = req.body
 
             const dataToCreatePost = {
                 userId,
@@ -23,7 +52,7 @@ class PostsController extends BaseController {
             const post = await postsService.createPost(dataToCreatePost)
 
             res.status(201).send(post)
-        } catch (e) {
+        } catch (e: any) {
             handleError(res, e)
         }
     }
