@@ -8,23 +8,42 @@ export interface IUser extends Model, ITimestamps {
     id: number
     email: string
     username: string
-    password?: string
+    password: string
 }
 
-const Users = sequelize.define<IUser>(`users`, {
-    email: {
-        type: DataTypes.TEXT,
-        unique: true,
-        allowNull: false,
+export type TUserAttributes = IUser[`_attributes`]
+
+const Users = sequelize.define<IUser>(
+    `users`,
+    {
+        email: {
+            type: DataTypes.TEXT,
+            unique: true,
+            allowNull: false,
+        },
+        username: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        password: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
     },
-    username: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+    {
+        defaultScope: {
+            attributes: {
+                exclude: [`password`],
+            },
+        },
+        scopes: {
+            withPassword: {
+                attributes: {
+                    exclude: [],
+                },
+            },
+        },
     },
-    password: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-})
+)
 
 export default Users
