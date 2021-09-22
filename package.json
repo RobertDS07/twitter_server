@@ -6,15 +6,25 @@
   "author": "Robert Damaceno <robertdamacenobob@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --fix .",
-    "initdb": "sequelize db:create",
-    "postinitdb": "sequelize db:migrate && sequelize db:seed",
     "plop": "plop --plopfile=tools/plopfile.ts --dest=.",
+    "lint": "eslint --fix .",
+
     "migrate": "sequelize db:migrate",
+    "migrate:undo": "sequelize db:migrate:undo",
+    "migrate:undo:all": "sequelize db:migrate:undo:all",
+
+    "initdb": "sequelize db:create",
+    "postinitdb": "yarn migrate && sequelize db:seed",
+    
+    "startdb": "docker-compose -f docker/docker-compose-dev.yml up",
+
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register src/",
-    "test": "yarn jest",
+
+    "pretest": "set NODE_ENV=test&&yarn migrate:undo:all&&yarn migrate",
+    "test": "yarn jest --runInBand",
+
     "build": "tsc",
-    "prestart": "build",
+    "prestart": "yarn build",
     "start": "node dist/"
   },
   "devDependencies": {
