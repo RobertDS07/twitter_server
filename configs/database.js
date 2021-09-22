@@ -10,6 +10,9 @@ const commons = {
         freezeTableName: true,
         paranoid: true,
     },
+    dialectOptions: {
+        useUTC: true,
+    },
 }
 
 module.exports = {
