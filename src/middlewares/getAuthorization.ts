@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express'
 
+import handleError from 'errors/handleError'
+
 import tokenService from 'services/tokenService'
 
 const setCredentials = (req: any, credentials: any): void => {
@@ -17,14 +19,12 @@ export default function getAuthorization(
 
         const token = authorization?.replace(`Bearer `, ``)
 
-        if (!token) throw new Error()
-
-        const decodedToken = tokenService.decodeToken(token as string)
+        const decodedToken = tokenService.decodeToken(token)
 
         setCredentials(req, decodedToken)
 
         next()
-    } catch (e) {
-        res.status(401).send(`Invalid Credentials`)
+    } catch (e: any) {
+        handleError(res, e)
     }
 }
