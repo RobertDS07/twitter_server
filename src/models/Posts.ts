@@ -9,10 +9,13 @@ import Users, { IUser } from './Users'
 export interface IPost extends Model, ITimestamps {
     id: number
     userId: number
+
     content: string
 
-    user: IUser
+    user?: IUser
 }
+
+export type TPostAttributes = IPost[`_attributes`]
 
 const Posts = sequelize.define<IPost>(`posts`, {
     userId: {
