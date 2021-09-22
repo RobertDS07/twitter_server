@@ -7,5 +7,8 @@ const createErrorBody = (err: Error): IErrorBody => ({
 })
 
 export default function handleError(res: Response, err: CustomError): void {
-    res.status(err.code ?? 500).send(err.body ?? createErrorBody(err))
+    const code = err.code ?? 500
+    const body = err.body ?? createErrorBody(err)
+
+    res.status(code).send(body)
 }

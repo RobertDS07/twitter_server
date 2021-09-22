@@ -4,14 +4,11 @@ import faker from 'faker'
 
 import app from '../../../src/app'
 
-import sequelize from '../../../src/sequelize'
-
 import createUser from '../../utils/createUser'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`/accounts routes tests`, () => {
-    beforeEach(async () => {
-        await sequelize.sync({ force: true })
-    })
+    beforeEach(() => truncateDatabase())
 
     it(`Should return a created user and token`, async () => {
         const dataToCreateUser = {
@@ -22,12 +19,12 @@ describe(`/accounts routes tests`, () => {
 
         const res = await request(app).post(`/accounts`).send(dataToCreateUser)
 
+        expect(res.statusCode).toBe(201)
         expect(res.body).toHaveProperty(`user`)
         expect(res.body).toHaveProperty(`token`)
-        expect(res.statusCode).toBe(201)
     })
 
-    it(`Should return code 422 and error for email in use`, async () => {
+    it(`Should return code 409 and error for email in use`, async () => {
         const { rawData } = await createUser()
 
         const res = await request(app).post(`/accounts`).send(rawData)
@@ -37,7 +34,8 @@ describe(`/accounts routes tests`, () => {
             .toLowerCase()
             .includes(`email`)
 
-        expect(hasError && messageQuoteEmail).toBeTruthy()
-        expect(res.statusCode).toBe(422)
+        expect(hasError).toBeTruthy()
+        expect(res.statusCode).toBe(409)
+        expect(messageQuoteEmail).toBeTruthy()
     })
 })

@@ -1,25 +1,44 @@
 'use strict'
 
 module.exports = {
-    up: async (queryInterface, Sequelize) => {
-        await queryInterface.sequelize.query(`
-          CREATE TABLE IF NOT EXISTS users(
-            id SERIAL PRIMARY KEY,
-
-            created_at TIMESTAMP DEFAULT NOW(),
-            updated_at TIMESTAMP DEFAULT NOW(),
-            deleted_at TIMESTAMP,
-
-            email TEXT UNIQUE NOT NULL,
-            username TEXT NOT NULL,
-            password TEXT NOT NULL CHECK (CHAR_LENGTH(password) >= 4)
-          )
-        `)
+    up: (queryInterface, Sequelize) => {
+      return queryInterface.createTable('users', {
+        id: {
+          type: Sequelize.DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        created_at: {
+          type: 'TIMESTAMP',
+          allowNull: false,
+          defaultValue: Sequelize.NOW
+      },
+        updated_at: {
+          type: 'TIMESTAMP',
+          allowNull: false,
+          defaultValue: Sequelize.NOW
+      },
+        deleted_at: {
+          type: 'TIMESTAMP',
+        },
+        
+        email: {
+          type: Sequelize.DataTypes.TEXT,
+          allowNull: false,
+          unique: true
+        },
+        username: {
+          type: Sequelize.DataTypes.TEXT,
+          allowNull: false
+        },
+        password: {
+          type: Sequelize.DataTypes.TEXT,
+          allowNull: false
+        },
+      })
     },
 
-    down: async (queryInterface, Sequelize) => {
-        await queryInterface.sequelize.query(`
-          DROP TABLE IF EXISTS users
-        `)
+    down: (queryInterface, Sequelize) => {
+        return queryInterface.dropTable('users')
     },
 }

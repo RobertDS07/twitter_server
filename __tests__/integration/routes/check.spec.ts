@@ -2,19 +2,18 @@ import request from 'supertest'
 
 import app from '../../../src/app'
 
-import sequelize from '../../../src/sequelize'
-
 import tokenService from '../../../src/services/tokenService'
 
 import createUser from '../../utils/createUser'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`/check route tests`, () => {
     beforeEach(async () => {
-        await sequelize.sync({ force: true })
+        await truncateDatabase()
     })
 
     it(`Should return a 204 for valid token`, async () => {
-        const { user } = await createUser(true)
+        const { user } = await createUser()
 
         const token = tokenService.createToken(user)
 

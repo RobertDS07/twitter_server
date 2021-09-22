@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.Sequelize.query(`
+    await queryInterface.sequelize.query(`
       CREATE TABLE IF NOT EXISTS {{snakeCase entityName}}(
         id SERIAL PRIMARY KEY,
 
@@ -15,7 +15,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.Sequelize.query(`
+    await queryInterface.sequelize.query(`
       DROP TABLE IF EXISTS {{snakeCase entityName}}
     `)
   }

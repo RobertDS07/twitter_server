@@ -1,24 +1,32 @@
 import bcrypt from 'bcryptjs'
 
-import { IUser } from 'models/Users'
+import Users, { IUser } from 'models/Users'
 
 import UsersRepository from 'repositories/UsersRepository'
 
 import CustomError from 'errors/CustomError'
 
-type TGetUser = Required<Pick<IUser, `email` | `password`>>
+import IUserWithoutPassword from 'src/interfaces/userWhithoutPassword'
+
+type TPropsGetUser = Pick<IUser, `email` | `password`>
 
 class AuthenticationService {
-    async verifyAndGetUser({ email, password }: TGetUser): Promise<IUser> {
-        const user = await UsersRepository.getByEmail(email)
+    async verifyAndGetUser({
+        email,
+        password,
+    }: TPropsGetUser): Promise<IUserWithoutPassword> {
+        const user = await UsersRepository.getByEmail(email, true)
 
-        const invalidPassword =
-            user && !bcrypt.compare(password, user?.password)
+        const invalidUser =
+            !user || !(await bcrypt.compare(password, user?.password))
 
-        if (!user || invalidPassword)
-            throw new CustomError(`Invalid email or password`).AccessDenied()
+        if (invalidUser)
+            throw new CustomError(`Invalid email or password`).accessDenied()
 
-        const userWithoutPassword = { ...user, password: undefined }
+        const userWithoutPassword = {
+            ...user,
+            password: undefined,
+        }
 
         return userWithoutPassword
     }

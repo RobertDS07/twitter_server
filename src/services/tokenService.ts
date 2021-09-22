@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
-import { IUser } from 'models/Users'
 import CustomError from 'errors/CustomError'
+
+import { IUser } from 'models/Users'
+
+import IUserWithoutPassword from 'src/interfaces/userWhithoutPassword'
 
 const { secret, expiresIn } = require(`../../configs/token.js`)
 
-export interface IDecodedToken extends JwtPayload, IUser {}
+export interface IDecodedToken extends JwtPayload, IUserWithoutPassword {}
 
 class TokenService {
-    createToken = (user: IUser): string => {
+    createToken = (user: IUser | IUserWithoutPassword): string => {
         const userWithoutPassword = { ...user, password: undefined }
 
         const token = jwt.sign(userWithoutPassword, secret, {
@@ -19,13 +22,11 @@ class TokenService {
         return token
     }
 
-    decodeToken = (token: string): IDecodedToken => {
+    decodeToken = (token = ``): IDecodedToken => {
         const decodedToken = jwt.decode(token) as IDecodedToken | null
 
         if (!decodedToken)
-            throw new CustomError(`Invalid Credentials`).AccessDenied()
-
-        if (decodedToken && decodedToken.password) delete decodedToken.password
+            throw new CustomError(`Invalid Credentials`).accessDenied()
 
         return decodedToken as IDecodedToken
     }

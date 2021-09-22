@@ -4,17 +4,18 @@ import accountRoutes from './public/accounts'
 import authenticationRoutes from './public/authentication'
 
 import checkRoutes from './private/check'
+import postsRoutes from './private/posts'
 
 class Routes {
     private routes: Router
 
     constructor() {
         this.routes = Router()
+
+        this.init()
     }
 
     get getRoutes() {
-        this.init()
-
         return this.routes
     }
 
@@ -31,6 +32,7 @@ class Routes {
 
     private privateRoutes() {
         this.routes.use(checkRoutes)
+        this.routes.use(postsRoutes)
     }
 
     private notFoundRoute() {

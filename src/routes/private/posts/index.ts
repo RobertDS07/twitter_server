@@ -1,7 +1,7 @@
 import PostsController from './postsController'
 import PostsMiddlewares from './postsMiddlewares'
 
-import BaseClassRoutes from '../../baseClassRoutes'
+import BaseClassRoutes from '../../_baseClassRoutes'
 
 class PostsRoutes extends BaseClassRoutes {
     constructor() {

@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import sequelize from '../../../src/sequelize'
-
 import AuthenticationService from '../../../src/services/authenticationService'
 
 import createUser from '../../utils/createUser'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`authenticationService tests`, () => {
     beforeEach(async () => {
-        await sequelize.sync({ force: true })
+        await truncateDatabase()
     })
 
     it(`Should return user for correct login`, async () => {
@@ -30,13 +28,9 @@ describe(`authenticationService tests`, () => {
                 password: `a`,
             }
 
-            const user = await AuthenticationService.verifyAndGetUser(
-                dataToLogin,
-            )
+            await AuthenticationService.verifyAndGetUser(dataToLogin)
 
-            //Shouldn't pass here
-
-            return false
+            expect(true).toBeFalsy()
         } catch (e) {
             const messageQuoteInvalid = e.message
                 .toLowerCase()

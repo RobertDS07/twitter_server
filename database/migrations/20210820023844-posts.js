@@ -1,23 +1,44 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.Sequelize.query(`
-      CREATE TABLE IF NOT EXISTS posts(
-        id SERIAL PRIMARY KEY,
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('posts', {
+      id: {
+        type: Sequelize.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      created_at: {
+        type: 'TIMESTAMP',
+        allowNull: false,
+        defaultValue: Sequelize.NOW
+      },
+      updated_at: {
+        type: 'TIMESTAMP',
+        allowNull: false,
+        defaultValue: Sequelize.NOW
+      },
+      deleted_at: {
+        type: 'TIMESTAMP',
+      },
 
-        created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW(),
-        deleted_at TIMESTAMP,
+      content: {
+        type: Sequelize.DataTypes.TEXT,
+        allowNull: false
+      },
 
-        content TEXT NOT NULL
-      )
-    `)
+      user_id: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          key: 'id',
+          model: 'users'
+        }
+      }
+    })
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.Sequelize.query(`
-      DROP TABLE IF EXISTS posts
-    `)
-  }
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('posts')
+  },
 };

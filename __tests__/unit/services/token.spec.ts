@@ -1,12 +1,11 @@
-import sequelize from '../../../src/sequelize'
-
 import TokenService from '../../../src/services/tokenService'
 
 import createUser from '../../utils/createUser'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`tokenService tests`, () => {
     beforeEach(async () => {
-        await sequelize.sync({ force: true })
+        await truncateDatabase()
     })
 
     it(`Should return a token and it must hasn't password of user`, async () => {
@@ -26,7 +25,8 @@ describe(`tokenService tests`, () => {
         try {
             TokenService.decodeToken(`Invalid token`)
 
-            return true
+            // Shouldnt pass here
+            expect(true).toBeFalsy()
         } catch (e) {
             const messageQuoteInvalid = e.message
                 .toLowerCase()

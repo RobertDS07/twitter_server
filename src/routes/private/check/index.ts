@@ -1,7 +1,7 @@
 import CheckController from './checkController'
 import CheckMiddlewares from './checkMiddlewares'
 
-import BaseClassRoutes from '../../baseClassRoutes'
+import BaseClassRoutes from '../../_baseClassRoutes'
 
 class CheckRoutes extends BaseClassRoutes {
     constructor() {

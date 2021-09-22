@@ -1,7 +1,7 @@
 import AuthenticationController from './authenticationController'
 import AuthenticationMiddlewares from './authenticationMiddlewares'
 
-import BaseClassRoutes from '../../baseClassRoutes'
+import BaseClassRoutes from '../../_baseClassRoutes'
 
 class AuthenticationRoutes extends BaseClassRoutes {
     constructor() {

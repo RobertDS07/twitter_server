@@ -4,11 +4,14 @@ import UsersRepository, {
     TPropsCreateUser,
 } from '../../src/repositories/UsersRepository'
 
-import Users, { IUser } from '../../src/models/Users'
+import { IUser } from '../../src/models/Users'
+
 import tokenService from '../../src/services/tokenService'
 
+import IUserWithoutPassword from '../../src/interfaces/userWhithoutPassword'
+
 interface IReturn {
-    user: IUser | Required<IUser>
+    user: IUser | IUserWithoutPassword
     rawData: TPropsCreateUser
     token: string
 }
@@ -22,11 +25,16 @@ export default async function createUser(
         password: faker.internet.password(),
     }
 
-    const user = includePassword
-        ? ((await Users.create(dataToCreateUser)).toJSON() as Required<IUser>)
-        : ((await UsersRepository.create(dataToCreateUser)) as IUser)
+    const user = await UsersRepository.create(dataToCreateUser)
 
     const token = tokenService.createToken(user)
 
-    return { user, rawData: dataToCreateUser, token }
+    return {
+        token,
+        rawData: dataToCreateUser,
+        user: {
+            ...user,
+            password: includePassword ? dataToCreateUser.password : undefined,
+        },
+    }
 }

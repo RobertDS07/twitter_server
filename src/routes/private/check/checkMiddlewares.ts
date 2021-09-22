@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 
-import BaseClassMiddlewares from '../../baseClassMiddlewares'
+import BaseClassMiddlewares from '../../_baseClassMiddlewares'
 
 import getAuthorization from 'middlewares/getAuthorization'
 

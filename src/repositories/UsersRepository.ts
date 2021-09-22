@@ -3,27 +3,27 @@ import bcrypt from 'bcryptjs'
 
 import { ModelCtor } from 'sequelize/types'
 
+import BaseRepository from './_baseClassRepository'
+
 import Users, { IUser } from 'models/Users'
 
-import verifyEmail from 'utils/verifyEmail'
+import { verifyEmail } from 'utils/validations'
 import CustomError from 'errors/CustomError'
 
-export type TPropsCreateUser = Required<
-    Pick<IUser, `password` | `email` | `username`>
->
+import IUserWithoutPassword from 'src/interfaces/userWhithoutPassword'
 
-class UsersRepository {
-    model: ModelCtor<IUser>
+export type TPropsCreateUser = Pick<IUser, `password` | `email` | `username`>
 
+class UsersRepository extends BaseRepository<IUser> {
     constructor(model: ModelCtor<IUser>) {
-        this.model = model
+        super(model)
     }
 
-    create = async ({
+    async create({
         email,
         password,
         username,
-    }: TPropsCreateUser): Promise<IUser> => {
+    }: TPropsCreateUser): Promise<IUserWithoutPassword> {
         const isEmail = verifyEmail(email)
         const weakPassword = password.length < 4
 
@@ -34,33 +34,39 @@ class UsersRepository {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const [newUser, isNew] = await this.model.findOrCreate({
-            where: { email },
-            defaults: {
-                password: hashedPassword,
-                username,
-            },
-        })
+        const { total } = await super.find({ where: { email } })
 
-        if (!isNew) throw new CustomError(`Email in use`).businessException()
+        const isntNew = total > 0
 
-        //TODO: ENCONTRAR UM MODO DE NÃO PRECISAR UTILIZA O .toJSON()
+        if (isntNew) throw new CustomError(`Email in use`).conflict()
+
+        const dataToCreateUser = {
+            email,
+            username,
+            password: hashedPassword,
+        }
+
+        const createdUser = await super.create(dataToCreateUser)
+
         const userWithoutPassword = {
-            ...newUser.toJSON(),
+            ...createdUser,
             password: undefined,
-        } as IUser
+        }
 
         return userWithoutPassword
     }
 
-    async getByEmail(email: string): Promise<Required<IUser> | null> {
-        const user = await this.model.findAll({
-            where: {
-                email,
-            },
-        })
+    async getByEmail(
+        email: string,
+        withPassword?: boolean,
+    ): Promise<IUser | null> {
+        const filter = { email }
 
-        return user[0] as Required<IUser>
+        const data = withPassword
+            ? await this.model.scope(`withPassword`).findAll({ where: filter })
+            : this.model.findAll({ where: filter })
+
+        return data[0]
     }
 }
 

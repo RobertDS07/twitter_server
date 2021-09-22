@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import BaseController from '../../baseController'
+import BaseController from '../../_baseController'
 
 class CheckController extends BaseController {
     async find(req: Request, res: Response): Promise<void> {

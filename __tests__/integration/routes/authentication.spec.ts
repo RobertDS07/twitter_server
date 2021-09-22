@@ -3,13 +3,12 @@ import request from 'supertest'
 
 import app from '../../../src/app'
 
-import sequelize from '../../../src/sequelize'
-
 import createUser from '../../utils/createUser'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`/authentication routes tests`, () => {
     beforeEach(async () => {
-        await sequelize.sync({ force: true })
+        await truncateDatabase()
     })
 
     it(`Should return code 200 and token for correct login`, async () => {
@@ -22,8 +21,8 @@ describe(`/authentication routes tests`, () => {
 
         const res = await request(app).post(`/authentication`).send(dataToLogin)
 
-        expect(res.body).toHaveProperty(`token`)
         expect(res.statusCode).toBe(200)
+        expect(res.body).toHaveProperty(`token`)
     })
 
     it(`Should return code 401 and message for invalid login`, async () => {
@@ -34,10 +33,10 @@ describe(`/authentication routes tests`, () => {
 
         const res = await request(app).post(`/authentication`).send(dataToLogin)
 
+        expect(res.statusCode).toBe(401)
         expect(res.body).toHaveProperty(
             [`errors`, 0, `msg`],
             `Invalid email or password`,
         )
-        expect(res.statusCode).toBe(401)
     })
 })

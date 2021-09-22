@@ -3,18 +3,17 @@ import faker from 'faker'
 
 import app from '../../../src/app'
 
-import sequelize from '../../../src/sequelize'
-
 import createPost from '../../utils/createPost'
 import createUser from '../../utils/createUser'
 import createAuthorization from '../../utils/createAuthorization'
+import truncateDatabase from '../../utils/truncateDatabase'
 
 describe(`/posts routes tests`, () => {
-    beforeEach(async () => {
-        sequelize.sync({ force: true })
-    })
-
     describe(`POST`, () => {
+        beforeEach(async () => {
+            await truncateDatabase()
+        })
+
         it(`Should return status 201 and the created post`, async () => {
             const { token } = await createUser()
 
@@ -53,7 +52,7 @@ describe(`/posts routes tests`, () => {
             expect(messageQuoteInvalid).toBeTruthy()
         })
 
-        it(`Should return error (422) for no data`, async () => {
+        it(`Should return error (400) for no data`, async () => {
             const { token } = await createUser()
 
             const dataToPost = {
@@ -71,12 +70,16 @@ describe(`/posts routes tests`, () => {
                 .toLowerCase()
                 .includes(`invalid`)
 
-            expect(res.statusCode).toBe(422)
+            expect(res.statusCode).toBe(400)
             expect(messageQuoteInvalid).toBeTruthy()
         })
     })
 
     describe(`GET`, () => {
+        beforeEach(async () => {
+            await truncateDatabase()
+        })
+
         it(`Should return status 200 and the paginated created posts`, async () => {
             await createPost()
             await createPost()
@@ -93,20 +96,17 @@ describe(`/posts routes tests`, () => {
             const hasPosts = !!res.body.data.length
             const onePostSkiped = res.body.data.length === 1
 
+            expect(hasPosts).toBeTruthy()
             expect(res.statusCode).toBe(200)
-            expect(hasPosts && onePostSkiped).toBeTruthy()
+            expect(onePostSkiped).toBeTruthy()
         })
-
-        // it(`Should return status 200 and specif created post`, async () => {
-        //     return false
-        // })
 
         it(`Should return a error (401) for invalid token`, async () => {
             const header = createAuthorization(`invalid Token`)
 
             const res = await request(app).get(`/posts`).set(header)
 
-            const messageQuoteInvalid = res.body.message[0].msg
+            const messageQuoteInvalid = res.body.errors[0].msg
                 .toLowerCase()
                 .includes(`invalid`)
 
@@ -115,21 +115,11 @@ describe(`/posts routes tests`, () => {
         })
     })
 
-    describe(`PATCH`, () => {
-        it(`Should return status 200 and the updated post`, async () => {
-            return false
-        })
-
-        it(`Should return a error when trying to modify post that not belongs to user`, async () => {
-            return false
-        })
-
-        it(`Should return a error for invalid token`, async () => {
-            return false
-        })
-    })
-
     describe(`DELETE`, () => {
+        beforeEach(async () => {
+            await truncateDatabase()
+        })
+
         it(`Should return status 204 and delete the post (delete is on deleted_at)`, async () => {
             return false
         })

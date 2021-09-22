@@ -2,7 +2,7 @@ import { check } from 'express-validator'
 
 import { RequestHandler } from 'express'
 
-import BaseClassMiddlewares from '../../baseClassMiddlewares'
+import BaseClassMiddlewares from '../../_baseClassMiddlewares'
 
 import verifyErrorsExpressValidator from 'middlewares/verifyErrorsExpressValidator'
 
