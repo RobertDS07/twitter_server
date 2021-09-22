@@ -21,6 +21,7 @@
         "quotes": [2, "backtick"],
         "prefer-template": "error",
         "prettier/prettier": "error",
-        "consistent-return" :"warn"
+        "consistent-return" :"warn",
+        "@typescript-eslint/no-explicit-any": "warn"
     }
 }
