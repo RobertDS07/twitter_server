@@ -15,7 +15,7 @@ export default function verifyErrorsExpressValidator(
 
     if (hasErrors) {
         res.status(400).send({ errors: errors })
+    } else {
+        next()
     }
-
-    next()
 }
