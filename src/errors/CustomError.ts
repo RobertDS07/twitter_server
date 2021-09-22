@@ -28,8 +28,14 @@ class CustomError extends Error {
         return this
     }
 
-    AccessDenied = (): this => {
+    accessDenied = (): this => {
         this.code = 401
+
+        return this
+    }
+
+    conflict = (): this => {
+        this.code = 409
 
         return this
     }
