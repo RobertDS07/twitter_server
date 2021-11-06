@@ -20,7 +20,7 @@
 
     "dev": "ts-node-dev --inspect -r tsconfig-paths/register src/",
 
-    "pretest": "set NODE_ENV=test&&yarn migrate:undo:all&&yarn migrate",
+    "pretest": "NODE_ENV=test yarn migrate:undo:all && NODE_ENV=test yarn migrate",
     "test": "yarn jest --runInBand",
 
     "build": "tsc",
