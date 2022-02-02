@@ -10,8 +10,9 @@ class AuthenticationMiddlewares extends BaseClassMiddlewares {
     post: RequestHandler[] = [
         check(`email`)
             .trim()
-            .isEmail()
             .exists({ checkFalsy: true })
+            .withMessage(`Required Email`)
+            .isEmail()
             .withMessage(`Invalid Email`),
         check(`password`)
             .exists({ checkFalsy: true })
